@@ -30,7 +30,7 @@ client = gspread.authorize(creds)
 
 # لینک شیت و نام شیت
 spreadsheet = client.open("clever. sale")  # نام فایل گوگل شیتت
-sheet = spreadsheet.worksheet("مصرف کنندگان")  # توجه: sheet1() نیست، worksheet با نام دقیق شیت
+sheet = spreadsheet.worksheet("CLICK_LOGS")  # توجه: sheet1() نیست، worksheet با نام دقیق شیت
 
 # توکن ربات تلگرام
 BOT_TOKEN = "8190481116:AAFWPwhwHufySrziUFaQVOEiBvRc-Bk52OU"
