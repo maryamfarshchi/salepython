@@ -3,17 +3,34 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 import requests
+import os
+import json
 
 app = Flask(__name__)
 
 # تنظیمات Google Sheets
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+# ساخت دیکشنری credentials از Environment Variables
+credentials_dict = {
+    "type": os.getenv("GOOGLE_TYPE"),
+    "project_id": os.getenv("GOOGLE_PROJECT_ID"),
+    "private_key_id": os.getenv("GOOGLE_PRIVATE_KEY_ID"),
+    "private_key": os.getenv("GOOGLE_PRIVATE_KEY").replace("\\n", "\n"),
+    "client_email": os.getenv("GOOGLE_CLIENT_EMAIL"),
+    "client_id": os.getenv("GOOGLE_CLIENT_ID"),
+    "auth_uri": os.getenv("GOOGLE_AUTH_URI"),
+    "token_uri": os.getenv("GOOGLE_TOKEN_URI"),
+    "auth_provider_x509_cert_url": os.getenv("GOOGLE_AUTH_PROVIDER"),
+    "client_x509_cert_url": os.getenv("GOOGLE_CLIENT_CERT_URL"),
+}
+
+creds = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, scope)
 client = gspread.authorize(creds)
 
 # لینک شیت و نام شیت
 spreadsheet = client.open("clever. sale")  # نام فایل گوگل شیتت
-sheet = spreadsheet.sheet1("مصرف کنندگان")  # یا .worksheet("نام دقیق شیت")
+sheet = spreadsheet.worksheet("مصرف کنندگان")  # توجه: sheet1() نیست، worksheet با نام دقیق شیت
 
 # توکن ربات تلگرام
 BOT_TOKEN = "8190481116:AAFWPwhwHufySrziUFaQVOEiBvRc-Bk52OU"
